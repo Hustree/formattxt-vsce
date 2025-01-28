@@ -115,7 +115,43 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    // Add command for default width (90)
+    let formatSelectedTXTDisposable = vscode.commands.registerCommand('extension.formatSelectedTXT', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.selection) {
+            const text = editor.document.getText(editor.selection);
+            const formattedText = formatText(text, 90);
+            
+            editor.edit(editBuilder => {
+                editBuilder.replace(editor.selection, formattedText);
+            });
+        }
+    });
+
+    // Add command for custom width
+    let formatSelectedTXTWidthDisposable = vscode.commands.registerCommand('extension.formatSelectedTXTWidth', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor && editor.selection) {
+            const width = await vscode.window.showInputBox({
+                prompt: 'Enter the line width',
+                value: '90'
+            });
+
+            if (width === undefined) { return; }
+
+            const text = editor.document.getText(editor.selection);
+            const formattedText = formatText(text, parseInt(width));
+            
+            editor.edit(editBuilder => {
+                editBuilder.replace(editor.selection, formattedText);
+            });
+        }
+    });
+
+    // Register all commands
     context.subscriptions.push(formatTXTDisposable);
+    context.subscriptions.push(formatSelectedTXTDisposable);
+    context.subscriptions.push(formatSelectedTXTWidthDisposable);
 }
 
 export function deactivate() { }

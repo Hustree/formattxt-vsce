@@ -26,8 +26,7 @@ A powerful VS Code extension that formats text while intelligently preserving do
 
 > **Note:** Non-.txt files require confirmation
 
-<!-- <img src="assets/FormatTXT.gif" alt="Format File Demo" width="800"/> -->
-<img src="https://raw.githubusercontent.com/Hustree/formattxt-vsce/main/assets/FormatTXT.gif" alt="Format File Demo" width="800"/>
+<img src="https://raw.githubusercontent.com/Hustree/formattxt-vsce/main/assets/demo.gif" alt="Format File Demo" width="800"/>
 
 ## Document Structure
 
