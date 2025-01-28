@@ -1,0 +1,86 @@
+{
+  "name": "formattxt",
+  "displayName": "FormatTXT",
+  "description": "Format your text files with smart line width control and structure preservation",
+  "version": "1.0.0",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "publisher": "joshuabascos",
+  "activationEvents": [
+    "onCommand:extension.formatTXT",
+    "onCommand:extension.formatSelectedTXT",
+    "onCommand:extension.formatSelectedTXTWidth"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.formatTXT",
+        "title": "FormatTXT"
+      },
+      {
+        "command": "extension.formatSelectedTXT",
+        "title": "FormatTXT: format with default width (=90)"
+      },
+      {
+        "command": "extension.formatSelectedTXTWidth",
+        "title": "FormatTXT: format with custom width"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "extension.formatSelectedTXT",
+          "when": "editorHasSelection",
+          "group": "1_modification"
+        },
+        {
+          "command": "extension.formatSelectedTXTWidth",
+          "when": "editorHasSelection",
+          "group": "1_modification"
+        }
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hustree/formattxt-vsce.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hustree/formattxt-vsce/issues"
+  },
+  "homepage": "https://github.com/Hustree/formattxt-vsce#readme",
+  "icon": "assets/icon.png",
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^8.47.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {}
+}
