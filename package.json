@@ -2,7 +2,7 @@
   "name": "formattxt",
   "displayName": "FormatTXT",
   "description": "Format your text files with smart line width control and structure preservation",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "engines": {
     "vscode": "^1.96.0"

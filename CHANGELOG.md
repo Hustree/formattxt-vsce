@@ -2,6 +2,11 @@
 
 All notable changes to the "formattxt" extension will be documented in this file.
 
+## [1.0.4] - 2024-01-20
+### Changed
+- Updated demo GIF with clearer formatting demonstration
+- Improved documentation with better examples
+
 ## [1.0.3] - 2024-01-20
 ### Added
 - Implemented selected text formatting commands
