@@ -1,36 +1,35 @@
 import * as vscode from 'vscode';
 
 function formatText(text: string, maxWidth: number): string {
-    // Detect and store original spacing patterns
-    const originalSpacing = {
-        sections: text.match(/\n{3,}/g) || [],
-        blocks: text.match(/\n{2,}(?!-)/g) || []
-    };
-
-    // Split into sections (separated by ---)
+    const urlPattern = /(https?:\/\/[^\s\n<>()[\]{}]+)/g;
+    
     const sections = text.split(/\n\s*---\s*\n/);
     
-    const formattedSections = sections.map((section, sectionIndex) => {
-        // Detect and preserve URLs
-        const urlPattern = /(https?:\/\/[^\s]+)/g;
-        const urls = section.match(urlPattern) || [];
-        const withoutUrls = section.replace(urlPattern, '|URL|');
+    const formattedSections = sections.map((section) => {
+        const urls: string[] = [];
+        let urlCounter = 0;
+        const withoutUrls = section.replace(urlPattern, (match) => {
+            const marker = `__URL${urlCounter}__`;
+            urls[urlCounter] = match;
+            urlCounter++;
+            return marker;
+        });
+
+        console.log('URLs stored:', urls);
         
-        // Split into blocks (separated by --)
         const blocks = withoutUrls.split(/\n\s*--\s*\n/);
         
-        return blocks.map((block, blockIndex) => {
-            // Handle lists
+        return blocks.map((block) => {
             if (block.trim().startsWith('-')) {
                 return block.split('\n')
                     .map(line => line.trim())
                     .join('\n');
             }
             
-            // Handle paragraphs with original spacing
             const paragraphs = block.split(/\n{2,}/);
             const formattedParagraphs = paragraphs.map(para => {
                 if (!para.trim()) return '';
+                
                 if (!para.includes('\n') && para.trim().length < maxWidth) {
                     return para.trim();
                 }
@@ -41,8 +40,8 @@ function formatText(text: string, maxWidth: number): string {
                 let currentLength = 0;
                 
                 words.forEach(word => {
-                    const isUrl = word === '|URL|';
-                    const actualWord = isUrl ? urls.shift() || word : word;
+                    const urlMatch = word.match(/__URL(\d+)__/);
+                    const actualWord = urlMatch ? urls[parseInt(urlMatch[1])] : word;
                     
                     if (currentLength + actualWord.length + 1 > maxWidth) {
                         lines.push(currentLine.join(' '));
@@ -58,15 +57,16 @@ function formatText(text: string, maxWidth: number): string {
                     lines.push(currentLine.join(' '));
                 }
                 
-                return lines.join('\n');
+                // Restore URLs in formatted paragraph
+                return lines.join('\n').replace(/__URL(\d+)__/g, (_, index) => {
+                    return urls[parseInt(index)] || '__URL_NOT_FOUND__';
+                });
             });
 
-            // Preserve original paragraph spacing
             return formattedParagraphs.join('\n\n');
         }).join('\n\n--\n\n');
     });
 
-    // Preserve original section spacing
     return formattedSections.join('\n\n---\n\n');
 }
 
