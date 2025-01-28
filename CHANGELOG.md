@@ -2,6 +2,12 @@
 
 All notable changes to the "formattxt" extension will be documented in this file.
 
+## [1.0.1] - 2024-01-20
+### Changed
+- Fixed GIF demo display in marketplace
+- Optimized GIF file size
+- Updated documentation
+
 ## [1.0.0] - 2024-01-20
 ### Added
 - Initial release of refactored FormatTXT
